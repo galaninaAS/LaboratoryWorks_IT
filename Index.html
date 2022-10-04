@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Интернет-технологии</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="myCard">
+        <div>
+            <p class="text-dec">Лабораторные работы</p>
+            <p class="text-dec">по дисциплине</p>
+            <p class="text-dec" style="padding: 0px 0px 40px 0px;">"Интернет-технологии"</p>
+        </div>
+        <div class="left">
+            <!--Слайдер-->
+            <div class="Slider table">
+                <div class="table-row">
+                    <!--Кнопка назад-->
+                    <div class="Slider-col">
+                        <a class="back" onclick="go(-1)">&#10094;</a>
+                    </div>
+                    <!--Слайдер-->
+                    <div class="Slides Slider-col">
+                        <img src="images/GitHub-Logo.png">
+                    </div>
+                    <div class="Slides Slider-col">
+                        <img src="images/TeamWork.png">
+                    </div>
+                    <!--Кнопки вперед-->
+                    <div class="Slider-col">
+                        <a class="next" onclick="go(1)">&#10095;</a>
+                    </div>
+                </div>
+            </div>
+            <!--Переключения между слайдами-->
+            <div class="button">
+                <span class="buttons" onclick="show(1)"></span>
+                <span class="buttons" onclick="show(2)"></span>
+            </div>
+        </div>
+        <div class="right">
+            <table>
+                <tr>
+                    <td colspan="2" class="info person">Лабораторная работа</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="about-otvet person">Название ЛР</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="info">Ссылки на веб-ресурсы</td>
+                </tr>
+                <tr>
+                    <td class="about">Исходный код</td>
+                    <td class="about-otvet"><a id="code">Исходный код</a></td>
+                </tr>
+                <tr>
+                    <td class="about person">Ссылка на веб-страницу</td>
+                    <td class="about-otvet"><a id="web">Веб-страницы</a></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="info">Описание</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="text person">Хяккимару – худой подросток среднего роста. Имеет длинные, теплого оттенка черные волосы, собранные в высокий конский хвост. У юноши достаточно бледная, с бескровным, неярким цветом, кожа. Глаза подростка, имеющие ясный, приближенный к яркому каштановому оттенку цвет, продолжительное время заменены глазными протезами с карей радужкой.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="index.js"></script>
+</html>
