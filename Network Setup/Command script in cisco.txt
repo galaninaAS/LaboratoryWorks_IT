@@ -1,0 +1,766 @@
+Мои комментарии к командам указаны в [...]
+Вариант 7
+
+1. Расчёт IP-адресов и настройка локальных сетей
+
+Выполнить расчет основных сетевых параметров для сетей VLAN A, VLAN B, VLAN C и VLAN D исходя из 
+известного количества узлов в каждой из них (согласно Вашему варианту), 
+а также известного диапазона адресов для внутренней сети (где Х – номер Вашего варианта): 
+10.X.0.0/16.
+
+
+VLAN A - 754
+VLAN B - 34
+VLAN C - 175
+VLAN D - 1353
+
+Диапазон адресов для внутренней сети:
+10.X.0.0/16 -> 10.7.0.0/16 -> 10.7.0.0 - 10.7.255.255
+
+[Расчет начинаем с сети, которая имеет большее количество узлов, 
+а заканчиваем сетью с наименьшим количеством узлов]
+
+--------------------------------------------------------------
+**************************************************************
+
+VLAN A -> 754 + 2 -> 756 -> 1024 -> 2^10
+
+LAN A: 10.7.8.0/22 ->
+mac: 255.255.252.0
+
+SN: 10.7.8.0
+H[min]: 10.7.8.1
+H[max]: 10.7.11.254
+BC: 10.7.11.255
+
+**************************************************************
+--------------------------------------------------------------
+**************************************************************
+
+VLAN B -> 34 + 2 -> 36 -> 64 -> 2^6
+
+LAN B: 10.7.13.0/26
+mac: 255.255.255.192
+
+SN: 10.7.13.0
+H[min]: 10.7.13.1
+H[max]: 10.7.13.62
+BC: 10.7.13.63
+
+**************************************************************
+--------------------------------------------------------------
+**************************************************************
+
+VLAN C -> 175 + 2 -> 177 -> 256 -> 2^8
+
+LAN C: 10.7.12.0/24
+mac: 255.255.255.0
+
+SN: 10.7.12.0
+H[min]: 10.7.12.1
+H[max]: 10.7.12.254
+BC: 10.7.12.255
+
+**************************************************************
+--------------------------------------------------------------
+**************************************************************
+
+VLAN D -> 1353 + 2 -> 1355 -> 2048 -> 2^11
+
+LAN D: 10.7.0.0/21
+mac: 255.255.248.0
+
+SN: 10.7.0.0
+H[min]: 10.7.0.1
+H[max]: 10.7.7.254
+BC: 10.7.7.255
+
+**************************************************************
+--------------------------------------------------------------
+
+Для служебных сетей, соединяющих между собой маршрутизаторы, использовать любые
+подсети из того же диапазона, размеры данных подсетей выбрать минимально возможными. 
+
+RIP:
+
+--------------------------------------------------------------
+
+LAN 1: 10.7.13.64/30 -> 10.7.13.64 - 10.7.13.67 [RouterA - RouterB]
+mac: 255.255.255.252
+
+SN: 10.7.13.64
+H[min]: 10.7.13.65
+H[max]: 10.7.13.66
+BC: 10.7.13.67
+
+--------------------------------------------------------------
+
+LAN 2: 10.7.13.68/30 -> 10.7.13.68 - 10.7.13.71 [RouterB - RouterC]
+mac: 255.255.255.252
+
+SN: 10.7.13.68
+H[min]: 10.7.13.69
+H[max]: 10.7.13.70
+BC: 10.7.13.71
+
+--------------------------------------------------------------
+
+LAN 3: 10.7.13.72/30 -> 10.7.13.72 - 10.7.13.75 [RouterC - RouterA]
+mac: 255.255.255.252
+
+SN: 10.7.13.72
+H[min]: 10.7.13.73
+H[max]: 10.7.13.74
+BC: 10.7.13.75
+
+--------------------------------------------------------------
+
+Для сети с серверами использовать сеть 192.168.0.0/16
+
+--------------------------------------------------------------
+
+LAN серверы: 192.168.0.0/16 -> 192.168.0.0 - 192.168.255.255
+mac: 255.255.0.0
+
+SN: 192.168.0.0
+H[min]: 192.168.0.1
+H[max]: 192.168.255.254
+BC: 192.168.255.255
+
+--------------------------------------------------------------
+
+Присвоить номера и наименования виртуальным сетям. 
+Наименование VLAN задать в формате #Фамилия. 
+Номера виртуальных сетей:
+
+VLAN A = 2X+10 = 24
+VLAN B = 2X+11 = 25
+VLAN C = 2X+12 = 26
+VLAN D = 2X+13 = 27
+
+SW0:
+
+Switch>en
+Switch#conf t
+Switch(config)#vlan 24 [vlan A]
+Switch(config-vlan)#name 24Ykolov
+Switch(config-vlan)#vlan 25 [vlan B]
+Switch(config-vlan)#name 25Ykolov
+Switch(config-vlan)#exit
+
+SW1:
+
+Switch>en
+Switch#conf t
+Switch(config)#vlan 26 [vlan A]
+Switch(config-vlan)#name 26Ykolov
+Switch(config-vlan)#vlan 27 [vlan B]
+Switch(config-vlan)#name 27Ykolov
+Switch(config-vlan)#exit
+
+Выполнить настройку компьютеров (настроить IP-адрес, маску подсети и шлюз по умолчанию). 
+Задать компьютерам IP-адреса из соответствующих диапазонов. 
+Как и ранее, использовать для компьютеров максимальные IP-адреса из доступных. 
+Компьютеры распределить по виртуальным сетям следующим образом: 
+PC1 – Vlan A, PC2 – Vlan B, PC3 – Vlan C, PC4 – Vlan D.
+
+--------------------------------------------------------------
+
+PC 1:
+
+ip: 10.7.11.254
+mac: 255.255.252.0
+gateway: 10.7.8.1
+dns server: 192.168.1.2
+
+--------------------------------------------------------------
+
+PC 2:
+
+ip: 10.7.13.62
+mac: 255.255.255.192
+gateway: 10.7.13.1
+dns server: 192.168.1.2
+
+--------------------------------------------------------------
+
+PC 3:
+
+ip: 10.7.12.254
+mac: 255.255.255.0
+gateway: 10.7.12.1
+dns server: 192.168.1.2
+
+--------------------------------------------------------------
+
+PC 4:
+
+ip: 10.7.7.254
+mac: 255.255.248.0
+gateway: 10.7.0.1
+dns server: 192.168.1.2
+
+--------------------------------------------------------------
+
+Выполнить настройку серверов:
+
+DNS: 192.168.1.2;
+HTTP local: 192.168.X.254 -> 192.168.7.254
+HTTP public: 192.168.X+1.254 -> 192.168.8.254
+
+Используя вкладку Services, убедиться, что на серверах настроены необходимые службы: 
+dns и веб-сервер.
+
+Local HTTP -> Config -> Settings:
+Gateway: 192.168.0.1
+DNS Server: 192.168.1.2
+
+Local HTTP -> Config -> FastEthernet0:
+ip: 192.168.7.254
+mac: 255.255.0.0
+
+Public HTTP -> Config -> Settings:
+Gateway: 192.168.0.1
+DNS Server: 192.168.1.2
+
+Public HTTP -> Config -> FastEthernet0:
+ip: 192.168.8.254
+mac: 255.255.0.0
+
+На вкладке Services/DNS добавить dns-записи для серверов public, local и external, 
+установив соответствие между их IP-адресами и доменными именами.
+
+DNS: [DNS -> Services -> DNS]
+
+name: external.com
+ip: 56.13.243.253 [у всех один и тот же, external server -> ip conf.. -> ip]
+
+name: local.com
+ip: 192.168.7.254 
+
+name: public.com
+ip: 192.168.8.254
+
+На вкладке Services/HTTP произвольно отредактировать веб-страницы серверов public и local. 
+Обязательное требование к веб-страницам: должны отображаться ФИО студента, номер группы и варианта. 
+Не используйте кириллицу!
+
+Local HTTP: [Local HTTP -> HTTP -> Index.html -> (edit)]
+Public HTTP: [Public HTTP -> HTTP -> Index.html -> (edit)]
+
+2. Настройка устройств
+
+Выполнить первоначальную настройку маршрутизаторов.
+
+Router А:
+
+Router>en
+Router#conf t
+A(config)#hostname A
+A(config)#enable password A
+A(config)#line console 0
+A(config-line)#password A
+A(config-line)#login
+A(config-line)#exit
+A(config)#service password-encryption
+A(config)#banner motd "This is a secure system. Authorized Access Only!"
+A(config)#line vty 0 15
+A(config-line)#password A
+A(config-line)#login
+A(config-line)#exit
+
+Router B:
+
+Router>en
+Router#conf t
+B(config)#hostname B
+B(config)#enable password B
+B(config)#line console 0
+B(config-line)#password B
+B(config-line)#login
+B(config-line)#exit
+B(config)#service password-encryption
+B(config)#banner motd "This is a secure system. Authorized Access Only!"
+B(config)#line vty 0 15
+B(config-line)#password B
+B(config-line)#login
+B(config-line)#exit
+
+Router C:
+
+Router>en
+Router#conf t
+C(config)#hostname C
+C(config)#enable password C
+C(config)#line console 0
+C(config-line)#password C
+C(config-line)#login
+C(config-line)#exit
+C(config)#service password-encryption
+C(config)#banner motd "This is a secure system. Authorized Access Only!"
+C(config)#line vty 0 15
+C(config-line)#password C
+C(config-line)#login
+C(config-line)#exit
+
+Настроить виртуальные локальные сети. Обратите внимание, что виртуальные сети в этом сценарии 
+создаются на коммутаторах отдельно, протокол vtp работать не будет, т.к. коммутаторы разделены 
+маршрутизатором Router B.
+
+SW0:
+
+Switch>en
+Switch#conf t
+Switch(config)#int f0/2 [выход к PC 1 - vlan A]
+Switch(config-if)#sw access vlan 24
+Switch(config-if)#int f0/3 [выход к PC 2 - vlan B]
+Switch(config-if)#sw access vlan 25
+Switch(config-if)#int f0/1 [выход к RouterB]
+Switch(config-if)#sw mo trunk
+Switch(config-if)#exit
+Switch(config)#do sh vlan
+
+SW1:
+
+Switch>en
+Switch#conf t
+Switch(config)#int f0/3 [выход к PC 3 - vlan C]
+Switch(config-if)#sw access vlan 26
+Switch(config-if)#int f0/2 [выход к PC 4 - vlan D]
+Switch(config-if)#sw access vlan 27
+Switch(config-if)#int f0/1 [выход к RouterB]
+Switch(config-if)#sw mo trunk
+Switch(config-if)#exit
+Switch(config)#do sh vlan
+
+Настроить интерфейсы и суб-интерфейсы на маршрутизаторах. В локальных сетях использовать минимальные 
+IP-адреса из доступных. В остальных подсетях использовать минимальный адрес для маршрутизатора 
+с меньшим порядковым номером.
+
+Router B:
+
+B>en
+B#conf t
+B(config)#int f7/0.1 [vlan A]
+B(config-subif)#encapsulation dot1Q 24 
+B(config-subif)#ip address 10.7.8.1 255.255.252.0
+B(config-subif)#int f7/0.2 [vlan B]
+B(config-subif)#enc dot1Q 25 
+B(config-subif)#ip address 10.7.13.1 255.255.255.192
+B(config-subif)#int f8/0.1 [vlan C]
+B(config-subif)#enc dot1Q 26
+B(config-subif)#ip address 10.7.12.1 255.255.255.0
+B(config-subif)#int f8/0.2 [vlan D]
+B(config-subif)#enc dot1Q 27
+B(config-subif)#ip address 10.7.0.1 255.255.248.0
+B(config-subif)#exit
+B(config-if)#int f7/0 [vlan A и vlan B]
+B(config-if)#no shutdown
+B(config-if)#int f8/0 [vlan C и vlan D]
+B(config-if)#no shutdown
+B(config-if)#int f9/0 [RouterB - RouterC]
+B(config-if)#ip address 10.7.13.69 255.255.255.252
+B(config-if)#no shutdown 
+B(config-if)#int f6/0 [RouterB - RouterA]
+B(config-if)#ip address 10.7.13.65  255.255.255.252
+B(config-if)#no shutdown
+
+Router C:
+
+B>en
+B#conf t
+B(config)#int f7/0 [RouterC - RouterB]
+B(config-if)#ip address 10.7.13.70 255.255.255.252
+B(config-if)#no shutdown 
+B(config-if)#int f6/0 [RouterC - RouterA]
+B(config-if)#ip address 10.7.13.73  255.255.255.252
+B(config-if)#no shutdown
+
+
+Router A:
+
+A>en
+A#conf t
+A(config)#int f8/0 [RouterA - RouterB]
+A(config-if)#ip address 10.7.13.66 255.255.255.252
+A(config-if)#no shutdown 
+A(config-if)#int f9/0 [RouterA - RouterC]
+A(config-if)#ip address 10.7.13.74  255.255.255.252
+A(config-if)#no shutdown
+
+3. Настройка маршрутизации
+
+Настроить маршрутизацию любым способом 
+(статическая, RIP, OSPF; обязательно отключить автосуммирование маршрутов).
+
+Router A:
+
+A>en
+A#conf t
+A(config)#router rip
+A(config-router)#ver 2
+A(config-router)#no auto-summary 
+A(config-router)#network 10.0.0.0
+A(config-router)#passive-interface f6/0 [internet]
+A(config-router)#passive-interface f7/0 [SW2]
+A(config-router)#default-information originate
+A(config-router)#exit
+A(config)#ip route 0.0.0.0 0.0.0.0 f6/0 [internet]
+
+Router B:
+
+B>en
+B#conf t
+B(config)#router rip
+B(config-router)#ver 2
+B(config-router)#no auto-summary
+B(config-router)#network 10.0.0.0 
+B(config-router)#passive-interface f7/0 [vlan A и vlan B]
+B(config-router)#passive-interface f8/0 [vlan C и vlan D]
+B(config-router)#exit
+
+Router C:
+
+С>en
+С#conf t
+С(config)#router rip
+С(config-router)#ver 2
+С(config-router)#no auto-summary
+C(config-router)#network 10.0.0.0 
+C(config-router)#exit
+
+4. Настройка ACL
+
+- Пользователям из VLAN A должен быть разрешен доступ по любому протоколу к любым узлам сети, 
+в т.ч. к сети Интернет.
+- Пользователям из VLAN B должны иметь доступ к сети Интернет и к серверам PUBLIC и DNS 
+по протоколам http и dns соответственно. Доступ к серверу LOCAL должен быть закрыт.
+- Пользователям из VLAN C должен быть доступен только сервер LOCAL по протоколу http.
+- Пользователям VLAN D должен быть доступен только Интернет, к серверам LOCAL и PUBLIC 
+доступ должен быть закрыт.
+- Между виртуальными сетями должен быть разрешен трафик протокола icmp.
+- Из сети Интернет должен быть открыт доступ только по протоколам dns и http и только 
+к серверам DNS и PUBLIC.
+
+Сеть Интернет не имеет конкретного адреса. 
+В моделируемой топологии сегмент Internet условно обозначает отдельный участок сети Интернет. 
+В связи с этим адрес сети, в которой находятся internet user и internet server, не должен 
+использоваться в конфигурации маршрутизаторов. 
+Вместо этого при настройке ACL необходимо использовать ключевое слово any, а при настройке 
+маршрутизации – маршруты по умолчанию.
+
+[80 - www]
+[53 - domain]
+
+Router B:
+
+B>en
+B#conf t
+B(config)#ip access-list extended vlan24 
+B(config-ext-nacl)#permit ip 10.7.8.0 0.0.3.255 any [vlan A, any]
+B(config-ext-nacl)#permit icmp any any [any, any]
+
+B(config-ext-nacl)#ip access-list extended vlan25
+B(config-ext-nacl)#permit icmp any any [any, any]
+B(config-ext-nacl)#deny ip 10.7.13.0 0.0.0.63 10.7.8.0 0.0.3.255 [vlan B, vlan A]
+B(config-ext-nacl)#deny ip 10.7.13.0 0.0.0.63 10.7.12.0 0.0.0.255 [vlan B, vlan C]
+B(config-ext-nacl)#deny ip 10.7.13.0 0.0.0.63 10.7.0.0 0.0.7.255 [vlan B, vlan D]
+B(config-ext-nacl)#permit ip 10.7.13.0 0.0.0.63 any [vlan B, any]
+
+B(config-ext-nacl)#ip access-list extended vlan26
+B(config-ext-nacl)#permit icmp any any
+B(config-ext-nacl)#permit ip 10.7.12.0 0.0.0.255 host 192.168.7.254 [vlan C, local]
+B(config-ext-nacl)#permit udp 10.7.12.0 0.0.0.255 host 192.168.1.2 eq domain [vlan C, dns]
+
+B(config-ext-nacl)#ip access-list extended vlan27
+B(config-ext-nacl)#permit icmp any any [any, any]
+B(config-ext-nacl)#permit udp 10.7.0.0 0.0.7.255 host 192.168.1.2 eq domain [vlan D, dns]
+B(config-ext-nacl)#deny ip 10.7.0.0 0.0.7.255 host 192.168.7.254 [vlan D, local]
+B(config-ext-nacl)#deny ip 10.7.0.0 0.0.7.255 host 12.168.8.254 [vlan D, public]
+B(config-ext-nacl)#permit ip 10.7.0.0 0.0.7.255 any [vlan D, any]
+B(config-ext-nacl)#exit
+B(config)#int f7/0.1
+B(config-subif)#ip access-group vlan24 in
+B(config-subif)#int f7/0.2
+B(config-subif)#ip access-group vlan25 in
+B(config-subif)#int f8/0.1
+B(config-subif)#ip access-group vlan26 in
+B(config-subif)#int f8/0.2
+B(config-subif)#ip access-group vlan27 in
+
+Router A:
+
+A>en
+A#conf t
+A(config)#ip access-list extended BORDER
+A(config-ext-nacl)#permit tcp any host 192.168.8.254 eq 80 [any, public]
+A(config-ext-nacl)#permit udp any host 192.168.1.2 eq 53 [any, dns]
+A(config-ext-nacl)#permit tcp any any established 
+
+A(config-ext-nacl)#ip access-list ext SERVERS
+A(config-ext-nacl)#permit ip 10.7.8.0 0.0.3.255 any [vlan A, any]
+
+A(config-ext-nacl)#permit tcp 10.7.13.0 0.0.0.63 host 192.168.8.254 eq 80 [vlan B, public]
+A(config-ext-nacl)#permit udp 10.7.13.0 0.0.0.63 host 192.168.1.2 eq 53 [vlan B, dns]
+A(config-ext-nacl)#deny ip 10.7.13.0 0.0.0.63 any [vlan B, any]
+
+A(config-ext-nacl)#permit tcp 10.7.12.0 0.0.0.255 host 192.168.7.254 eq 80 [vlan C, local]
+A(config-ext-nacl)#permit tcp any host 192.168.8.254 eq 80 [any, public]
+A(config-ext-nacl)#permit udp any host 192.168.1.2 eq 53 [any, dns]
+A(config-ext-nacl)#deny ip 10.7.12.0 0.0.0.255 any [vlan C, any]
+
+A(config-ext-nacl)#permit udp 10.7.0.0 0.0.7.255 host 192.168.1.2 eq 53 [vlan D, dns]
+A(config-ext-nacl)#permit tcp 10.7.0.0 0.0.7.255 host 192.168.7.254 eq 80 [vlan D, local]
+A(config-ext-nacl)#deny ip 10.7.0.0 0.0.7.255 any [vlan D, any]
+A(config-ext-nacl)#exit
+A(config)#int f6/0 [internet]
+A(config-if)#ip access-group BORDER in
+A(config-if)#int f7/0 [sw2]
+A(config-if)#ip access-group SERVERS out
+
+
+Индивидуальное задание на защиту ЛР5 
+1. Добавить новый сервер new123.com
+2. Разрешить к нему доступ ТОЛЬКО:  по http из интернета и LANA, по ICMP - из LAN B,C
+3. Не поломать старые разрешения и запреты.
+
+new123 HTTP -> Config -> FastEthernet0:
+ip: 192.168.9.254
+mac: 255.255.0.0
+
+new123 HTTP -> Config -> Settings:
+Gateway: 192.168.0.1
+DNS Server: 192.168.1.2
+
+DNS: [DNS -> Services -> DNS]
+
+name: new123.com
+ip: 192.168.9.254
+mac: 255.255.0.0
+
+Router A:
+
+A>en
+A#conf t
+A(config)#no ip access-list extended BORDER
+A(config)#ip access-list extended BORDER
+A(config-ext-nacl)#permit tcp any host 192.168.8.254 eq 80 [any, public]
+A(config-ext-nacl)#permit udp any host 192.168.1.2 eq 53 [any, dns]
+A(config-ext-nacl)#permit tcp any host 192.168.9.254 eq 80 [any, new123] 
+A(config-ext-nacl)#permit tcp any any established 
+
+A(config)#ip access-list extended BORDER2
+A(config-ext-nacl)#permit udp any host 192.168.1.2 eq 53 [any, dns]
+
+A(config-ext-nacl)#no ip access-list ext SERVERS
+A(config-ext-nacl)#ip access-list ext SERVERS
+A(config-ext-nacl)#deny icmp 10.7.8.0 0.0.3.255 host 192.168.9.254 [vlan A, new123] 
+A(config-ext-nacl)#permit tcp 10.7.8.0 0.0.3.255 host 192.168.9.254 eq 80 [vlan A, new123] 
+A(config-ext-nacl)#permit ip 10.7.8.0 0.0.3.255 any [vlan A, any]
+
+A(config-ext-nacl)#permit tcp 10.7.13.0 0.0.0.63 host 192.168.8.254 eq 80 [vlan B, public]
+A(config-ext-nacl)#permit udp 10.7.13.0 0.0.0.63 host 192.168.1.2 eq 53 [vlan B, dns]
+A(config-ext-nacl)#permit icmp 10.7.13.0 0.0.0.63 host 192.168.9.254 [vlan B, new123] 
+A(config-ext-nacl)#deny tcp 10.7.13.0 0.0.0.63 host 192.168.9.254 eq 80 [vlan B, new123] 
+A(config-ext-nacl)#deny ip 10.7.13.0 0.0.0.63 any [vlan B, any]
+
+A(config-ext-nacl)#permit tcp 10.7.12.0 0.0.0.255 host 192.168.7.254 eq 80 [vlan C, local]
+A(config-ext-nacl)#permit tcp any host 192.168.8.254 eq 80 [any, public]
+A(config-ext-nacl)#permit udp any host 192.168.1.2 eq 53 [any, dns]
+A(config-ext-nacl)#permit icmp 10.7.12.0 0.0.0.255 host 192.168.9.254 [vlan C, new123] 
+A(config-ext-nacl)#deny tcp 10.7.12.0 0.0.0.255 host 192.168.9.254 eq 80 [vlan С, new123] 
+A(config-ext-nacl)#deny ip 10.7.12.0 0.0.0.255 any [vlan C, any]
+
+A(config-ext-nacl)#permit udp 10.7.0.0 0.0.7.255 host 192.168.1.2 eq 53 [vlan D, dns]
+A(config-ext-nacl)#permit tcp 10.7.0.0 0.0.7.255 host 192.168.7.254 eq 80 [vlan D, local]
+A(config-ext-nacl)#deny icmp 10.7.0.0 0.0.7.255 host 192.168.9.254 [vlan D, new123] 
+A(config-ext-nacl)#deny tcp 10.7.0.0 0.0.7.255 host 192.168.9.254 eq 80 [vlan D, new123] 
+A(config-ext-nacl)#deny ip 10.7.0.0 0.0.7.255 any [vlan D, any]
+
+A(config-ext-nacl)#permit tcp any host 192.168.9.254 eq 80 [any, new123]
+A(config-ext-nacl)#exit
+A(config)#int f6/0 [internet]
+A(config-if)#ip access-group BORDER in
+A(config-if)#int f7/0 [sw2]
+A(config-if)#ip access-group SERVERS out
+
+Индивидуальное задание на защиту ЛР5 
+1. Добавить новый сервер abc.org
+2. Добавить новый VLAN-112: 119.ВАР.0.0/29
+3. Разрешить доступ к новому серверу ТОЛЬКО по http ТОЛЬКО из VLAN-С,D и Интернета
+4. Разрешить доступ из нового VLAN в интернет по http + dns + icmp до всех серверов
+5. Не поломать старые разрешения и запреты.
+6. Поменять все пароли на всех устройствах на 0211.
+
+Добавить новый сервер abc.org...
+
+abc.org -> Config -> Global Setting:
+Display Name: abc
+
+abc.org -> Desktop -> Ip Configuration:
+Ip address: 192.168.13.254
+Subnet Mask: 255.255.0.0
+Default Gateeay: 192.168.0.1
+DNS Server: 192.168.1.2
+ip: 192.168.9.254
+mac: 255.255.0.0
+
+DNS -> Services -> DNS:
+Name: abc.org
+Address: 192.168.13.254
+
+Добавить новый VLAN-112: 119.ВАР.0.0/29...
+
+LAN A: 119.11.0.0/29 ->
+mac: 255.255.255.248
+
+SN: 119.11.0.0
+H[min]: 119.11.0.1
+H[max]: 119.11.0.6
+BC: 119.11.0.7
+
+PC 0:
+
+ip: 119.11.0.6
+mac: 255.255.255.248
+gateway: 119.11.0.1
+dns server: 192.168.1.2
+
+SW1:
+
+Switch>en
+Switch#conf t
+Switch(config)#vlan 112
+Switch(config-vlan)#name 112kuchin
+Switch(config-vlan)#exit
+
+SW1:
+
+Switch>en
+Switch#conf t
+Switch(config)#int f0/4
+Switch(config-if)#sw access vlan 112
+Switch(config-if)#exit
+Switch(config)#do sh vlan
+
+Router B:
+
+B>en
+B#conf t
+B(config)#int f8/0.3
+B(config-subif)#enc dot1Q 112
+B(config-subif)#ip address 119.11.0.1 255.255.255.248
+B(config-subif)#exit
+B(config-if)#int f8/0 
+B(config-if)#no shutdown
+
+Router A:
+
+A>en
+A#conf t
+A(config)#router rip
+A(config-router)#network 119.0.0.0
+А(config-router)#exit
+
+Router B:
+
+B>en
+B#conf t
+B(config)#router rip
+B(config-router)#network 119.0.0.0 
+B(config-router)#exit
+
+Router C:
+
+С>en
+С#conf t
+С(config)#router rip
+C(config-router)#network 119.0.0.0 
+C(config-router)#exit
+
+Разрешить доступ к новому серверу ТОЛЬКО по http ТОЛЬКО из VLAN-С,D и Интернета...
+Разрешить доступ из нового VLAN в интернет по http + dns + icmp до всех серверов...
+
+RouterB
+
+no ip access-list extended vlan32
+no ip access-list extended vlan33
+no ip access-list extended vlan34
+no ip access-list extended vlan35
+no ip access-list extended vlan112
+ip access-list extended vlan112
+permit ip 119.11.0.1 0.0.0.7 any 
+permit icmp any any 
+permit ip 119.11.0.1 0.0.0.7 any 
+permit udp 119.11.0.1 0.0.0.7 host 192.168.1.2 eq 53
+ip access-list extended vlan32
+permit ip 10.11.5.64 0.0.0.15 any 
+permit icmp any any 
+ip access-list extended vlan33
+permit icmp any any 
+deny ip 10.11.4.0 0.0.0.255 10.11.5.64 0.0.0.15 
+deny ip 10.11.4.0 0.0.0.255 10.11.5.0 0.0.0.63 
+deny ip 10.11.4.0 0.0.0.255 10.11.0.0 0.0.3.255 
+permit ip 10.11.4.0 0.0.0.255 any 
+ip access-list extended vlan34
+permit icmp any any 
+permit ip 10.11.5.0 0.0.0.63 host 192.168.13.254 
+permit ip 10.11.5.0 0.0.0.63 host 192.168.11.254 
+permit udp 10.11.5.0 0.0.0.63 host 192.168.1.2 eq 53
+ip access-list extended vlan35
+permit icmp any any 
+permit udp 10.11.0.0 0.0.3.255 host 192.168.1.2 eq 53
+deny ip 10.11.0.0 0.0.3.255 host 192.168.11.254 
+deny ip 10.11.0.0 0.0.3.255 host 192.168.12.254 
+permit ip 10.11.0.0 0.0.3.255 any 
+exit
+int f7/0.1
+ip access-group vlan32 in
+int f7/0.2
+ip access-group vlan33 in
+int f8/0.1
+ip access-group vlan34 in
+int f8/0.2
+ip access-group vlan35 in
+int f8/0.3
+ip access-group vlan112 in
+exit
+
+RouterA
+
+no ip access-list extended BORDER
+no ip access-list extended SERVERS
+ip access-list extended BORDER
+permit tcp any host 192.168.13.254 eq 80
+permit tcp any host 192.168.12.254 eq 80
+permit udp any host 192.168.1.2 eq 53
+permit tcp any any established
+ip access-list extended SERVERS
+permit icmp 119.11.0.1 0.0.0.7 any 
+permit tcp 119.11.0.1 0.0.0.7 host 192.168.13.254 eq 80
+permit tcp 119.11.0.1 0.0.0.7 host 192.168.12.254 eq 80
+permit tcp 119.11.0.1 0.0.0.7 host 192.168.11.254 eq 80
+permit udp 119.11.0.1 0.0.0.7 host 192.168.1.2 eq 53
+deny ip 119.11.0.1 0.0.0.7 any 
+deny tcp 10.11.5.64 0.0.0.15 host 192.168.13.254 eq 80
+permit ip 10.11.5.64 0.0.0.15 any 
+deny tcp 10.11.4.0 0.0.0.255 host 192.168.13.254 eq 80
+permit tcp 10.11.4.0 0.0.0.255 host 192.168.12.254 eq 80
+permit udp 10.11.4.0 0.0.0.255 host 192.168.1.2 eq 53
+deny ip 10.11.4.0 0.0.0.255 any 
+permit tcp 10.11.5.0 0.0.0.63 host 192.168.13.254 eq 80
+permit tcp 10.11.5.0 0.0.0.63 host 192.168.11.254 eq 80
+permit tcp any host 192.168.12.254 eq 80
+permit udp any host 192.168.1.2 eq 53
+deny ip 10.11.5.0 0.0.0.63 any 
+permit tcp 10.11.0.0 0.0.3.255 host 192.168.13.254 eq 80
+permit udp 10.11.0.0 0.0.3.255 host 192.168.1.2 eq 53
+permit tcp 10.11.0.0 0.0.3.255 host 192.168.11.254 eq 80
+deny ip 10.11.0.0 0.0.3.255 any 
+permit tcp any host 192.168.13.254 eq 80
+exit
+int f6/0
+ip access-group BORDER in
+int f7/0
+ip access-group SERVERS out
+exit
