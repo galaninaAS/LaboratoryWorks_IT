@@ -13,6 +13,14 @@ var lab2 = {
     code: "https://github.com/kxenki/IT_Project",
     about: "В рамках данной лабораторной работы необходимо в команде разработать проект и создать Landing page с описанием самого проекта."
 };
+
+var lab3 = {
+    name: "Лабораторная работа №3",
+    name2: "Работа с Сisco Packet Tracer",
+    link: "https://github.com/aggink/LaboratoryWorks_IT",
+    code: "https://inlnk.ru/G6MvYK",
+    about: "В рамках данной лабораторной работы необходимо настроить сеть в  Сisco Packet Tracer. Packet Tracer — симулятор сети передачи данных, выпускаемый фирмой Cisco Systems. Позволяет делать работоспособные модели сети, настраивать маршрутизаторы и коммутаторы, взаимодействовать между несколькими пользователями."
+};
  
 
 var Index = 1;
@@ -63,6 +71,18 @@ function showSlides(n) {
                 web.href = lab2.link;
                 web.innerText = lab2.link;
                 person[3].textContent = lab2.about;
+            }
+            break;
+        case 3:
+            for(i = 0; i < person.length; i++){
+                person[0].textContent = lab3.name;
+                person[1].textContent = lab3.name2;
+                code.href = lab3.code;
+                code.innerText = lab3.code;
+                person[2].textContent = "Репозиторий";
+                web.href = lab3.link;
+                web.innerText = lab3.link;
+                person[3].textContent = lab3.about;
             }
             break;
     }
