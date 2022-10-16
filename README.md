@@ -43,6 +43,15 @@
 1. Репозиторий проекта доступен по ссылке: [IT_Project](https://github.com/kxenki/IT_Project)
 2. Веб-страница с описанием проекта доступна по ссылке: [Landing page](https://github.com/aggink/LaboratoryWorks_IT)
 
+## ✅ Лабораторная работа № 3
+
+Работа с Сisco Packet Tracer.
+
+Материалы о выполнении лабораторной работы:
+* Проект: [Project](https://github.com/aggink/LaboratoryWorks_IT/blob/main/Network%20Setup/Project.pka?raw=true)
+* Информация о конфигурации устройств: [Device Configuration Information](https://github.com/aggink/LaboratoryWorks_IT/blob/main/Network%20Setup/Device%20Configuration%20Information.docx?raw=true)
+* Сценарий для настройки устройств: [Command script in cisco](https://github.com/aggink/LaboratoryWorks_IT/blob/main/Network%20Setup/Command%20script%20in%20cisco.txt)
+
 ## ✅ Экзаменационные билет №23
 
 Ответ на экзаменационный билет доступен по ссылке:
