@@ -1,7 +1,7 @@
  var lab1 = {
     name: "Лабораторная работа №1",
     name2: "Знакомство с основными инструментами и нотациями",
-    link: "https://github.com/aggink/LaboratoryWorks_IT",
+    link: "https://aggink.github.io/LaboratoryWorks_IT/",
     code: "https://github.com/aggink/LaboratoryWorks_IT",
     about: "GITHUB - информационная система коллективной разработки программных средств. В рамках данной лабораторной работы необходимо зарегистрироваться на github.com, создать личный репозиторий, создать личную веб-страницу с описанием выполнения лабораторных работ, разместить код веб-страницы в репозитории, а также разместить ее на хостинге."
 };
@@ -9,7 +9,7 @@
 var lab2 = {
     name: "Лабораторная работа №2",
     name2: "IT Проект",
-    link: "https://github.com/kxenki/IT_Project",
+    link: "https://kxenki.github.io/IT_Project/",
     code: "https://github.com/kxenki/IT_Project",
     about: "В рамках данной лабораторной работы необходимо в команде разработать проект и создать Landing page с описанием самого проекта."
 };
@@ -55,7 +55,7 @@ function showSlides(n) {
                 person[1].textContent = lab1.name2;
                 code.href = lab1.code;
                 code.innerText = lab1.code;
-                person[2].textContent = "Репозиторий";
+                person[2].textContent = "Landing Page";
                 web.href = lab1.link;
                 web.innerText = lab1.link;
                 person[3].textContent = lab1.about;
